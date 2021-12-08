@@ -1,0 +1,23 @@
+{
+  "name": "whistle.statistics",
+  "version": "1.0.0",
+  "description": "将抓包数据上传到服务器",
+  "main": "./lib",
+  "scripts": {
+    "lint": "eslint lib",
+    "lintfix": "eslint --fix lib"
+  },
+  "dependencies": {
+    "koa": "^2.6.2",
+    "koa-bodyparser": "^4.2.1",
+    "koa-onerror": "^4.1.0",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
+    "request": "^2.88.2"
+  },
+  "devDependencies": {
+    "babel-eslint": "^9.0.0",
+    "eslint": "5.6.0",
+    "eslint-config-imweb": "^0.2.13"
+  }
+}
