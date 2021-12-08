@@ -139,6 +139,13 @@
       <button disabled id="update">更新配置</button>
     </header>
     <label class="form-control">
+      <input id="autoStop" type="checkbox" />
+      自动停止抓包
+      <p>
+        <strong>说明：</strong>完成上传结果后，关闭抓包监听
+      </p>
+    </label>
+    <label class="form-control">
       计时秒数
       <input id="timeout" type="number" placeholder="计时秒数" />
       <strong>
@@ -192,7 +199,7 @@
   <script>
     ;(function() {
       function showMessage(msg, success) {
-        var tips = $('#tips');
+        let tips = $('#tips');
         tips.text(msg);
         if (success) {
           tips.addClass('success');
@@ -209,6 +216,9 @@
         if (data.active) {
           $('#active')[0].checked = true;
         }
+        if (data.autoStop) {
+          $('#autoStop')[0].checked = true;
+        }
         if (data.timeout) {
           $('#timeout').val(data.timeout);
         }
@@ -219,9 +229,9 @@
           $('#filterText').val(data.filterText);
         }
 
-        var pendingActive;
-        var activeBox = $('#active').on('change', ({ target }) => {
-          var { checked } = target;
+        let pendingActive;
+        let activeBox = $('#active').on('change', ({ target }) => {
+          let { checked } = target;
           if (pendingActive) {
             target.checked = !checked;
             return;
@@ -242,8 +252,8 @@
             }
         });
       });
-      var btn = $('#update');
-      $('#timeout,#uploadArgs,#filterText').on('input', function(){
+      let btn = $('#update');
+      $('#autoStop,#timeout,#uploadArgs,#filterText').on('input', function(){
          btn[0].disabled = false;
       });
       btn.click(function() {
@@ -252,6 +262,7 @@
           url: 'cgi-bin/set-settings',
           dataType: 'json',
           data: {
+            autoStop: $('#autoStop')[0].checked ? 1 : 0,
             timeout: $('#timeout').val().trim(),
             uploadArgs: $('#uploadArgs').val().trim(),
             filterText: $('#filterText').val().trim()
