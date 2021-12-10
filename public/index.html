@@ -2,8 +2,9 @@
 <html>
 
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta charset="utf-8"/>
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
   <title>设置上传参数</title>
   <style>
     html, body, pre {
@@ -12,26 +13,32 @@
       padding: 0;
       margin: 0;
     }
+
     input, textarea {
       font-family: "Helvetica Neue", Helvetica, Tahoma, Arial, "Microsoft Yahei", 微软雅黑, "Hiragino Sans GB", "PingFang SC", STHeiTi, sans-serif;
       font-size: 14px;
     }
+
     * {
       box-sizing: border-box;
     }
+
     #root {
-      width:800px;
+      width: 800px;
       margin: 0 auto;
       padding-bottom: 100px;
       display: none;
     }
+
     a {
       color: #337ab7;
       text-decoration: none;
     }
+
     label {
       display: block;
     }
+
     label input[type=text], label input[type=number], label textarea {
       display: block;
       width: 100%;
@@ -44,27 +51,31 @@
       background-image: none;
       border: 1px solid #ccc;
       border-radius: 4px;
-      -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-      box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-      -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
-      -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-      transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+      -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+      -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+      -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+      transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
       margin-top: 8px;
       background-color: lightyellow;
     }
+
     label textarea {
       resize: none;
       height: 200px;
       padding: 5px 10px;
     }
+
     header {
       line-height: 50px;
       height: 50px;
       position: sticky;
     }
+
     header label {
       float: left;
     }
+
     button {
       color: #fff;
       margin-top: 12px;
@@ -90,10 +101,22 @@
       border-radius: 4px;
       float: right;
     }
+
     button[disabled] {
       background: #ccc;
       cursor: not-allowed;
     }
+
+    button.error {
+      background-color: #d9534f;
+      border-color: orange;
+      margin-right: 20px;
+    }
+
+    button.success {
+      margin-right: 20px;
+    }
+
     #tips {
       display: none;
       text-align: center;
@@ -106,157 +129,168 @@
       border-radius: 3px;
       color: #fff;
     }
-    #tips.success {
+
+    #tips.success, button.success {
       background: #5cb85c;
     }
+
     #tips.warn {
       background: lightyellow;
     }
+
     .form-control {
       margin-top: 36px;
       font-weight: bold;
     }
+
     .desc {
       margin-top: 10px;
     }
+
     pre {
       margin: 10px 0;
-      padding: 0;
       font-family: consola;
       background: #eee;
-      padding-top: 13px;
+      padding: 10px;
     }
   </style>
 </head>
 <body>
-  <div id="tips"></div>
-  <div id="root">
-    <header>
-      <label style="font-weight: bold;">
-        <input id="active" type="checkbox" />
-        启用抓包并上传数据
-      </label>
-      <button disabled id="update">更新配置</button>
-    </header>
-    <label class="form-control">
-      <input id="autoStop" type="checkbox" />
-      自动停止抓包
-      <p>
-        <strong>说明：</strong>完成上传结果后，关闭抓包监听
-      </p>
+<div id="tips"></div>
+<div id="root">
+  <header>
+    <label style="font-weight: bold;">
+      <input id="active" type="checkbox"/>
+      启用抓包并上传数据
     </label>
-    <label class="form-control">
-      计时秒数
-      <input id="timeout" type="number" placeholder="计时秒数" />
-      <strong>
-        说明：从启动抓包后第一次适配到规则内的请求开始计时，计时结束后上传结果
-      </strong>
-    </label>
-    <label class="form-control">
-      上传参数(Json格式, 按照request库的请求参数格式):
-      <textarea id="uploadArgs" placeholder="请输入上传参数"></textarea>
-      <strong>说明：</strong>
-      <pre>
-        {
-        url: 'http://xxxx',
-        method: 'POST',
-        form: {
-          ...
-        }
-        }
-        # 本程序会在form 中最终加入请求详情:`items`: [{method,url,status,duration,raw}...]
-      </pre>
-    </label>
-    <label class="form-control">
-      过滤条件(空表示匹配所有请求，否则只存储匹配的请求):
-      <textarea id="filterText" maxlength="3072" placeholder="请输入过滤条件，具体规则见下面的说明"></textarea>
-    </label>
-    <div class="desc">
-      <strong>说明: </strong>支持通过字符串、正则的方式匹配请求的URL，
-      且支持通过 <strong>!xxx</strong> 的方式取非，可以同时设置多个过滤条件，
-      条件之间用空格或换行符分隔，如：
-      <pre>
-        #注释
-        ke.qq.com !/test=1/ /autosave/i
-        !m.ke.qq.com
-      </pre>
-      上述配置表示，请求URL里面要包含字符串
-      <strong>ke.qq.com</strong>，或不匹配正则 <strong>/test=1/</strong>，
-      或匹配正则 <strong>/autosave/i</strong>，或不包含字符串 <strong>m.ke.qq.com</strong>，即：
-      <pre>
-        if (url.indexOf('ke.qq.com') !== -1 || !/test=1/.test(url)
-          || /autosave/i.test(url) || url.indexOf('m.ke.qq.com') === -1) {
-          // auto save
-        }
-      </pre>
-      如果该插件无法满足需要，比如更多的过滤条件或存储到指定远程数据库，可以参考
-      <a href="https://github.com/whistle-plugins/whistle.autosave" target="_blank">
-        whstle.autosave
-      </a>的实现自定义一个whistle插件。
-    </div>
+    <button disabled id="update">更新配置</button>
+    <button class="error" id="btn_error">异常</button>
+    <button class="success" id="btn_error_clear">清理异常</button>
+  </header>
+  <label class="form-control" id="error_list" style="display: none;">
+    异常日志：<select></select>
+    <pre></pre>
+  </label>
+  <label class="form-control">
+    <input id="autoStop" type="checkbox"/>
+    自动停止抓包
+    <p>
+      <strong>说明：</strong>完成上传结果后，关闭抓包监听
+    </p>
+  </label>
+  <label class="form-control">
+    计时秒数
+    <input id="timeout" type="number" placeholder="计时秒数"/>
+    <strong>
+      说明：自动停止抓包开启时需要。从启动抓包第一次适配到规则内的请求开始计时，计时结束后停止抓包
+    </strong>
+  </label>
+  <label class="form-control">
+    上传参数(Json格式, 按照request库的请求参数格式):
+    <textarea id="uploadArgs" placeholder="请输入上传参数"></textarea>
+    <strong>说明：</strong># 本程序会在form 中最终加入请求详情: method,url,status,duration,raw
+    <pre>
+{
+  url: 'http://xxxx',
+  method: 'POST',
+  form: {
+    ...
+  }
+}
+    </pre>
+  </label>
+  <label class="form-control">
+    过滤条件(空表示匹配所有请求，否则只存储匹配的请求):
+    <textarea id="filterText" maxlength="3072"
+              placeholder="请输入过滤条件，具体规则见下面的说明"></textarea>
+  </label>
+  <div class="desc">
+    <strong>说明: </strong>支持通过字符串、正则的方式匹配请求的URL，
+    且支持通过 <strong>!xxx</strong> 的方式取非，可以同时设置多个过滤条件，
+    条件之间用空格或换行符分隔，如：
+    <pre>
+#注释
+ke.qq.com !/test=1/ /autosave/i
+!m.ke.qq.com
+    </pre>
+    上述配置表示，请求URL里面要包含字符串
+    <strong>ke.qq.com</strong>，或不匹配正则 <strong>/test=1/</strong>，
+    或匹配正则 <strong>/autosave/i</strong>，或不包含字符串 <strong>m.ke.qq.com</strong>，即：
+    <pre>
+if (url.indexOf('ke.qq.com') !== -1 || !/test=1/.test(url)
+  || /autosave/i.test(url) || url.indexOf('m.ke.qq.com') === -1) {
+  // auto save
+}
+    </pre>
+    如果该插件无法满足需要，比如更多的过滤条件或存储到指定远程数据库，可以参考
+    <a href="https://github.com/whistle-plugins/whistle.autosave"
+       target="_blank">
+      whstle.autosave
+    </a>的实现自定义一个whistle插件。
   </div>
-  <script src="jquery.js"></script>
-  <script>
-    ;(function() {
-      function showMessage(msg, success) {
-        let tips = $('#tips');
-        tips.text(msg);
-        if (success) {
-          tips.addClass('success');
-        } else {
-          tips.removeClass('success');
-        }
-        tips.stop(true, true).show();
-        tips.css('marginLeft', -tips[0].offsetWidth / 2);
-        tips.delay(2000).fadeOut(1600);
+</div>
+<script src="jquery.js"></script>
+<script>
+  ;(function () {
+    function showMessage(msg, success) {
+      let tips = $('#tips');
+      tips.text(msg);
+      if (success) {
+        tips.addClass('success');
+      } else {
+        tips.removeClass('success');
+      }
+      tips.stop(true, true).show();
+      tips.css('marginLeft', -tips[0].offsetWidth / 2);
+      tips.delay(2000).fadeOut(1600);
+    }
+
+    function initUI(data) {
+      $('#root').show();
+      if (data.active) {
+        $('#active')[0].checked = true;
+      }
+      if (data.autoStop) {
+        $('#autoStop')[0].checked = true;
+      }
+      if (data.timeout) {
+        $('#timeout').val(data.timeout);
+      }
+      if (data.uploadArgs) {
+        $('#uploadArgs').val(data.uploadArgs);
+      }
+      if (data.filterText) {
+        $('#filterText').val(data.filterText);
       }
 
-      function initUI(data) {
-        $('#root').show();
-        if (data.active) {
-          $('#active')[0].checked = true;
+      let pendingActive;
+      let activeBox = $('#active').on('change', ({target}) => {
+        let {checked} = target;
+        if (pendingActive) {
+          target.checked = !checked;
+          return;
         }
-        if (data.autoStop) {
-          $('#autoStop')[0].checked = true;
-        }
-        if (data.timeout) {
-          $('#timeout').val(data.timeout);
-        }
-        if (data.uploadArgs) {
-          $('#uploadArgs').val(data.uploadArgs);
-        }
-        if (data.filterText) {
-          $('#filterText').val(data.filterText);
-        }
-
-        let pendingActive;
-        let activeBox = $('#active').on('change', ({ target }) => {
-          let { checked } = target;
-          if (pendingActive) {
+        pendingActive = true;
+        $.post({
+          url: 'cgi-bin/active',
+          dataType: 'json',
+          data: {active: checked ? 1 : 0},
+          success: function () {
+            pendingActive = false;
+            showMessage((checked ? '启用' : '关闭') + '成功', true);
+          },
+          error: function () {
             target.checked = !checked;
-            return;
+            pendingActive = false;
+            showMessage('提交失败，请稍后重试！');
           }
-          pendingActive = true;
-          $.post({
-            url: 'cgi-bin/active',
-            dataType: 'json',
-            data: { active: checked ? 1 : 0 },
-            success: function() {
-              pendingActive = false;
-              showMessage((checked ? '启用' : '关闭') + '成功', true);
-            },
-            error: function() {
-              target.checked = !checked;
-              pendingActive = false;
-              showMessage('提交失败，请稍后重试！');
-            }
         });
       });
       let btn = $('#update');
-      $('#autoStop,#timeout,#uploadArgs,#filterText').on('input', function(){
-         btn[0].disabled = false;
+      $('#autoStop,#timeout,#uploadArgs,#filterText').on('input', function () {
+        btn[0].disabled = false;
       });
-      btn.click(function() {
+      btn.click(function () {
         btn[0].disabled = true;
         $.post({
           url: 'cgi-bin/set-settings',
@@ -267,7 +301,7 @@
             uploadArgs: $('#uploadArgs').val().trim(),
             filterText: $('#filterText').val().trim()
           },
-          success: function(data) {
+          success: function (data) {
             if (data.ec) {
               return showMessage(data.em);
             }
@@ -276,7 +310,7 @@
               activeBox.trigger('click');
             }
           },
-          error: function() {
+          error: function () {
             btn[0].disabled = false;
             showMessage('提交失败，请稍后重试！');
           }
@@ -289,13 +323,108 @@
         url: 'cgi-bin/get-settings',
         dataType: 'json',
         success: initUI,
-        error: function() {
+        error: function () {
           setTimeout(init, 1000);
         }
       });
     }
+
+    function getErrorCount() {
+      $.get({
+        url: 'cgi-bin/get-error-count',
+        dataType: 'json',
+        success: function (resp) {
+          if (resp.ec === 0) {
+            $('#btn_error').text(`异常[${resp.count}]`)
+          } else {
+            showMessage(resp.em)
+          }
+        },
+        error: function (e) {
+          showMessage(`${e.status} ${e.statusText}`)
+        }
+      })
+    }
+
+    function loopErrorCount() {
+      setTimeout(() => {
+        getErrorCount()
+        loopErrorCount()
+      }, 1000)
+    }
+
+    loopErrorCount()
+    $('#btn_error_clear').on('click', () => {
+      $.get({
+        url: 'cgi-bin/clear-error',
+        dataType: 'json',
+        success: function (resp) {
+          if (resp.ec === 0) {
+            showMessage('清理成功', true)
+            $('#error_list').slideUp()
+          } else {
+            showMessage(resp.em)
+          }
+        },
+        error: function (e) {
+          showMessage(`${e.status} ${e.statusText}`)
+        }
+      })
+    });
+
+    function showErrorLog(file) {
+      if (!file.trim()) {
+        $('#error_list').find('pre').text('')
+        return
+      }
+      let ctx = $('#error_list').find('pre')
+      ctx.text('loading...')
+      $.get({
+        url: `cgi-bin/get-error?file=${file}`,
+        dataType: 'json',
+        success: function (resp) {
+          if (resp.ec === 0) {
+            ctx.text(resp.content)
+          } else {
+            ctx.text(`read failed: ${resp.em}`)
+            showMessage(resp.em)
+          }
+        },
+        error: function (e) {
+          ctx.text(`read failed: ${e.status} ${e.statusText}`)
+          showMessage(`${e.status} ${e.statusText}`)
+        }
+      })
+    }
+
+    $('#btn_error').on('click', () => {
+      $.get({
+        url: 'cgi-bin/get-error-list',
+        dataType: 'json',
+        success: function (resp) {
+          if (resp.ec === 0) {
+            let cl = [`<option value=""> </option>`];
+            resp.files.forEach((x, _) => {
+              cl.push(`<option value="${x}">${x}</option>`)
+            })
+            $('#error_list')
+              .slideDown()
+              .find('select').html(cl.join('')).off()
+              .on('change', function ({target}) {
+                showErrorLog($(target).val())
+              });
+          } else {
+            showMessage(resp.em)
+          }
+        },
+        error: function (e) {
+          showMessage(`${e.status} ${e.statusText}`)
+        }
+      })
+    });
+
     init();
   })();
-  </script>
+</script>
 </body>
 </html>
