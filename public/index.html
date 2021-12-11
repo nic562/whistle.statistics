@@ -337,7 +337,7 @@ if (url.indexOf('ke.qq.com') !== -1 || !/test=1/.test(url)
           if (resp.ec === 0) {
             $('#btn_error').text(`异常[${resp.count}]`)
           } else {
-            showMessage(resp.em)
+            showMessage(`请求失败：${resp.em.code || resp.em}`)
           }
         },
         error: function (e) {
