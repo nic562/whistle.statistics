@@ -8,7 +8,7 @@
 
 安装方法：
 ```shell
-npm i -g github:nic562/whistle.statistics
+npm install -g nic562/whistle.statistics
 ```
 
 完成后便可在Whistle 的插件页中看到
