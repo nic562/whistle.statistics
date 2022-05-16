@@ -19,7 +19,9 @@ npm install -g nic562/whistle.statistics
   - **autoStop**: 1 or 0 是否自动停止 
   - **timeout**: 默认10 秒，自动停止的计时时长 
   - **uploadArgs**: 自定义上传接口参数，json格式
-    - form: 固定参数，以下参数会在上报指定接口时自动注入
+    - url: 上传到目标http服务地址。每一个抓包请求均上传一次
+    - method: 上传的方法 POST/GET
+    - form: 参数表单，即自定义上传接口将要接收到的请求参数，可以在本节点下加入自定义内容，以下抓包内容会在上传接口请求时传入
       - method: 请求方式
       - url: 请求地址
       - status: 请求响应状态
